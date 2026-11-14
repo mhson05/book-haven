@@ -27,16 +27,17 @@ Hệ thống thương mại điện tử nhà sách tuyển chọn phục vụ B
 
 ## 🔑 Tài Khoản Demo
 
-| Vai trò | Tên đăng nhập | Email | Mật khẩu | Phạm vi quyền hạn |
-| :--- | :--- | :--- | :--- | :--- |
-| **Quản trị viên (Admin)** | `admin` | `admin@bookhaven.vn` | `admin123` | Cổng Quản trị (`#admin`): Duyệt đơn, điều phối bàn giao Drone/GHN, thống kê doanh thu, nhập hàng kho |
-| **Khách hàng (User)** | `user` | `user@bookhaven.vn` | `user123` | Giao diện mua sách, giỏ hàng, thanh toán VietQR, đặt giao Drone, theo dõi đơn hàng |
+| Vai trò                   | Tên đăng nhập | Email                | Mật khẩu   | Phạm vi quyền hạn                                                                                    |
+| :------------------------ | :------------ | :------------------- | :--------- | :--------------------------------------------------------------------------------------------------- |
+| **Quản trị viên (Admin)** | `admin`       | `admin@bookhaven.vn` | `admin123` | Cổng Quản trị (`#admin`): Duyệt đơn, điều phối bàn giao Drone/GHN, thống kê doanh thu, nhập hàng kho |
+| **Khách hàng (User)**     | `user`        | `user@bookhaven.vn`  | `user123`  | Giao diện mua sách, giỏ hàng, thanh toán VietQR, đặt giao Drone, theo dõi đơn hàng                   |
 
 ---
 
 ## ⚡ Hướng Dẫn Cài Đặt & Khởi Chạy
 
 ### Yêu cầu môi trường
+
 - **Python** 3.10+ (dự án phát triển trên Python 3.15)
 - **Node.js** 18+ & **npm**
 - **PowerShell** (Windows, nếu dùng script chạy tự động `run.ps1`)
@@ -45,10 +46,10 @@ Hệ thống thương mại điện tử nhà sách tuyển chọn phục vụ B
 
 ### Bước 1: Thiết lập dự án lần đầu (sau khi tải / `git clone`)
 
-> Chỉ cần thực hiện **1 lần duy nhất** ở lần đầu thiết lập máy mới.
-
 #### 1.1. Tạo môi trường ảo & cài thư viện Backend
+
 Mở terminal tại thư mục gốc `book-haven/`:
+
 ```powershell
 cd backend
 python -m venv .venv
@@ -57,48 +58,62 @@ python -m venv .venv
 ```
 
 #### 1.2. Tạo file cấu hình biến môi trường (`.env`)
+
 Đứng tại thư mục `backend/`:
+
 ```powershell
 Copy-Item .env.example .env
 ```
+
 Mở `backend/.env` và cập nhật:
+
 - `CF_ACCOUNT_ID`, `CF_API_TOKEN`: điền thông tin Cloudflare Workers AI nếu sử dụng tính năng Chatbot AI.
 - `SECRET_KEY`: giữ nguyên khi chạy local hoặc đổi sang chuỗi bí mật riêng.
 
 #### 1.3. Khởi tạo Cơ sở dữ liệu (`backend/db/bookhaven.db`)
-*(Bỏ qua bước này nếu thư mục `backend/db/` đã có sẵn file `bookhaven.db` và `backend/assets/covers/`.)*
+
+_(Bỏ qua bước này nếu thư mục `backend/db/` đã có sẵn file `bookhaven.db` và `backend/assets/covers/`.)_
 
 Đứng tại thư mục `backend/`, chạy kịch bản khởi tạo hợp nhất:
+
 ```powershell
 .\.venv\Scripts\python.exe scripts/gen_db.py
 ```
+
 Lệnh này tự động tạo 13 bảng từ `db/schema.sql`, nạp 2 tài khoản mẫu, cào 250 đầu sách & tải ảnh bìa vào `assets/covers/`, đồng thời sinh vector AI (`all-MiniLM-L6-v2`).
+
 - Nếu chỉ muốn tạo schema + tài khoản mẫu nhanh mà không cào sách:
   ```powershell
   .\.venv\Scripts\python.exe scripts/gen_db.py --no-crawl
   ```
 
 #### 1.4. Cài đặt thư viện Frontend
+
 ```powershell
 cd ..\frontend
 npm install
 ```
-*(Nếu dùng `run.ps1` ở bước sau, script cũng sẽ tự chạy `npm install` khi phát hiện chưa có `node_modules`.)*
+
+_(Nếu dùng `run.ps1` ở bước sau, script cũng sẽ tự chạy `npm install` khi phát hiện chưa có `node_modules`.)_
 
 ---
 
 ### Bước 2: Khởi chạy hệ thống
 
 #### Cách 1: Chạy tự động bằng PowerShell (`run.ps1` — Khuyên dùng)
+
 Mở terminal tại thư mục gốc `book-haven/`:
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\run.ps1
 ```
-*Script tự động giải phóng cổng `8000` / `5173`, kiểm tra `node_modules`, khởi chạy Backend FastAPI + Frontend Vite trong 2 cửa sổ riêng, chờ mô hình AI nạp xong và tự mở trình duyệt.*
+
+_Script tự động giải phóng cổng `8000` / `5173`, kiểm tra `node_modules`, khởi chạy Backend FastAPI + Frontend Vite trong 2 cửa sổ riêng, chờ mô hình AI nạp xong và tự mở trình duyệt._
 
 #### Cách 2: Chạy thủ công từng phần (Manual)
 
 **Terminal 1 — Backend (FastAPI `:8000`)**
+
 ```powershell
 cd backend
 
@@ -108,25 +123,31 @@ cd backend
 # Hoặc chạy kèm auto-reload khi chỉnh sửa code Python:
 .\.venv\Scripts\python.exe main.py
 ```
+
 - API Cổng chính: `http://localhost:8000`
 - Tài liệu API Swagger UI: `http://localhost:8000/docs`
 
 **Terminal 2 — Frontend (React + Vite `:5173`)**
+
 ```powershell
 cd frontend
 npm run dev
 ```
+
 - Giao diện người dùng: `http://localhost:5173`
 - Trang Quản trị Admin: `http://localhost:5173/#admin`
 
-*(Tuỳ chọn Production Build)*: Nếu muốn phục vụ luôn giao diện React qua cổng `8000` mà không cần chạy `npm run dev`:
+_(Tuỳ chọn Production Build)_: Nếu muốn phục vụ luôn giao diện React qua cổng `8000` mà không cần chạy `npm run dev`:
+
 ```powershell
 cd frontend
 npm run build
 ```
+
 Sau khi có `frontend/dist/`, chỉ cần bật Backend (`:8000`) và mở `http://localhost:8000/`.
 
 #### Chạy kiểm thử Backend (Pytest)
+
 ```powershell
 cd backend
 .\.venv\Scripts\pytest.exe
