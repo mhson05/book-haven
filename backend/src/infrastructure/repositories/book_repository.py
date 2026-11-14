@@ -195,17 +195,6 @@ class BookRepository:
             (product.stock_on_hand, product.stock_reserved, product.product_id)
         )
 
-    def update_edition_stock(self, product_or_sku: Any, stock_reserved: Optional[int] = None):
-        """Tương thích ngược cho update_edition_stock."""
-        if isinstance(product_or_sku, Product):
-            self.update_product_stock(product_or_sku)
-        elif stock_reserved is not None:
-            conn = self.session.get_connection()
-            conn.execute(
-                "UPDATE products SET stock_reserved = ? WHERE sku = ?;",
-                (stock_reserved, str(product_or_sku))
-            )
-
     def search_books_sql(
         self,
         query: str,

@@ -228,10 +228,10 @@ def _create_sample_checkout_order() -> str:
     cart_repo.save_item(cart_id, sample_eid, 1)
 
     ed = book_repo.get_edition_by_id(sample_eid)
-    if ed and ed.available_stock() < 5:
+    if ed and ed.get_available_stock() < 5:
         ed.stock_on_hand = max(ed.stock_on_hand, 50)
         ed.stock_reserved = 0
-        book_repo.update_edition_stock(ed)
+        book_repo.update_product_stock(ed)
 
     checkout_payload = {
         "cart_id": cart_id,
@@ -264,12 +264,12 @@ def test_atomic_checkout_success():
     cart_repo.save_item(cart_id, sample_eid, 1)
 
     initial_edition = book_repo.get_edition_by_id(sample_eid)
-    if initial_edition.available_stock() < 5:
+    if initial_edition.get_available_stock() < 5:
         initial_edition.stock_on_hand = max(initial_edition.stock_on_hand, 50)
         initial_edition.stock_reserved = 0
-        book_repo.update_edition_stock(initial_edition)
+        book_repo.update_product_stock(initial_edition)
 
-    initial_avail = initial_edition.available_stock()
+    initial_avail = initial_edition.get_available_stock()
     initial_reserved = initial_edition.stock_reserved
 
     checkout_payload = {
@@ -302,7 +302,7 @@ def test_atomic_checkout_success():
     # Kiểm tra Invariant giữ chỗ trong CSDL:
     updated_edition = book_repo.get_edition_by_id(sample_eid)
     assert updated_edition.stock_reserved == initial_reserved + 1
-    assert updated_edition.available_stock() == initial_avail - 1
+    assert updated_edition.get_available_stock() == initial_avail - 1
 
     # Kiểm tra giỏ hàng đã được làm rỗng
     refreshed_cart = cart_repo.get_cart_by_id(cart_id)
@@ -454,10 +454,10 @@ def test_drone_cod_checkout_and_status_flow():
     cart_repo.save_item(cart_id, sample_eid, 1)
 
     ed = book_repo.get_edition_by_id(sample_eid)
-    if ed and ed.available_stock() < 5:
+    if ed and ed.get_available_stock() < 5:
         ed.stock_on_hand = max(ed.stock_on_hand, 50)
         ed.stock_reserved = 0
-        book_repo.update_edition_stock(ed)
+        book_repo.update_product_stock(ed)
 
     # 1. Ràng buộc nghiệp vụ: Đặt hàng với Drone + COD phải bị từ chối
     bad_payload = {

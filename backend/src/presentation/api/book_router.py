@@ -66,10 +66,6 @@ class ProductCatalogController:
         return {"total": len(categories), "categories": categories}
 
 
-# Alias tương thích ngược với Figure 4.5 và mã nguồn cũ
-BookController = ProductCatalogController
-
-
 @router.get("/books")
 def list_books(
     category_id: Optional[str] = Query(None, description="Lọc theo mã thể loại"),
@@ -98,4 +94,4 @@ def list_categories(book_repo: BookRepository = Depends(get_book_repo)):
     return ProductCatalogController(book_repo).list_categories()
 
 
-__all__ = ["router", "ProductCatalogController", "BookController"]
+__all__ = ["router", "ProductCatalogController"]

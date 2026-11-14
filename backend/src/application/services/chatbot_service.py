@@ -265,7 +265,7 @@ class ChatbotService:
 
             editions = self.book_repo.get_editions_by_book_id(item.book_id)
             for ed in editions:
-                avail = ed.available_stock()
+                avail = ed.get_available_stock()
                 if avail > 0:
                     suggested_books.append(
                         BookCardDTO(

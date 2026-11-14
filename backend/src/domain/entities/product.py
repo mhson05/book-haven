@@ -97,10 +97,6 @@ class Product(ABC):
         """Tồn kho khả dụng = tồn thực tế - tồn đang giữ chỗ 15 phút (BR02)."""
         return max(0, self._stock_on_hand - self._stock_reserved)
 
-    def available_stock(self) -> int:
-        """Alias tương thích ngược."""
-        return self.get_available_stock()
-
     def check_availability(self, quantity: int) -> bool:
         """Kiểm tra số lượng đặt mua có vượt tồn khả dụng không."""
         return self.get_available_stock() >= quantity

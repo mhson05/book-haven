@@ -47,7 +47,7 @@ class AdminController:
                 "edition_id": updated_edition.edition_id,
                 "sku": updated_edition.sku,
                 "stock_on_hand": updated_edition.stock_on_hand,
-                "available_stock": updated_edition.available_stock(),
+                "available_stock": updated_edition.get_available_stock(),
             }
         except EntityNotFoundException as e:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
