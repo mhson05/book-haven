@@ -23,14 +23,14 @@ from src.application.services.inventory_service import InventoryService
 from src.infrastructure.database import DatabaseSession
 from src.infrastructure.repositories.book_repository import BookRepository
 from src.infrastructure.repositories.order_repository import OrderRepository
-from src.presentation.api.admin_router import router as admin_router
-from src.presentation.api.auth_router import router as auth_router
-from src.presentation.api.book_router import router as book_router
-from src.presentation.api.cart_router import router as cart_router
-from src.presentation.api.chatbot_router import router as chatbot_router
-from src.presentation.api.checkout_router import router as checkout_router
-from src.presentation.api.payment_router import router as payment_router
-from src.presentation.api.search_router import router as search_router
+from src.web.admin_router import router as admin_router
+from src.web.auth_router import router as auth_router
+from src.web.book_router import router as book_router
+from src.web.cart_router import router as cart_router
+from src.web.chatbot_router import router as chatbot_router
+from src.web.checkout_router import router as checkout_router
+from src.web.payment_router import router as payment_router
+from src.web.search_router import router as search_router
 
 MEDIA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "assets"))
 FRONTEND_DIST = os.path.abspath(
